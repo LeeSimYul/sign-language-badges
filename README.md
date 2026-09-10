@@ -20,6 +20,8 @@
 | **LSF** | Langue des Signes Française (프랑스 수어) | 삼색기 (프랑스) | 디스코드 역할, UI 배지 등 |
 | **NGT** | Nederlandse Gebarentaal (네덜란드 수어) | 네덜란드 국기 | 디스코드 역할, UI 배지 등 |
 
+> 다른 국가의 수어 배지가 필요하신가요? [Issues]를 열어 요청해 주세요!
+
 ---
 
 ### 📜 사용 조건 (CC BY 4.0)

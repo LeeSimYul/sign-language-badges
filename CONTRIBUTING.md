@@ -26,14 +26,9 @@ Auslan(호주), LSE(스페인), CSL(중국), ISL(아일랜드/인도/이스라�
 ## 1. 기여 절차
 
 1. 저장소를 **Fork** 하고 `feature/add-<약어>` 형식의 브랜치를 만듭니다. (예: `feature/add-auslan`)
-2. `assets/svg/<약어>.svg` 에 **SVG 원본 1개**를 추가합니다.
-3. 아래 명령으로 래스터 배지를 생성합니다.
-   ```bash
-   pip install -r scripts/requirements.txt
-   python scripts/generate_badges.py --only <약어> --sizes md --formats png,webp
-   ```
-4. `README.md` 의 배지 목록 표에 새 행을 추가합니다. (한국어 표 / English 표 **양쪽 모두**)
-5. Pull Request를 열고, 본문에 **수어 명칭의 원어 표기**와 **참고한 출처**를 적어 주세요.
+2. `assets/png/<약어>.png` 에 **완성본 PNG**를, `assets/svg/<약어>.svg` 에 **외곽선 벡터**를 추가합니다.
+3. `README.md` 의 배지 목록 표에 새 행을 추가합니다. (한국어 표 / English 표 **양쪽 모두**)
+4. Pull Request를 열고, 본문에 **수어 명칭의 원어 표기**와 **참고한 출처**를 적어 주세요.
 
 > 직접 디자인하기 어렵다면 [Issues](https://github.com/LeeSimYul/sign-language-badges/issues)에
 > 요청만 남겨 주셔도 됩니다. 요청도 훌륭한 기여입니다.
@@ -50,22 +45,22 @@ Auslan(호주), LSE(스페인), CSL(중국), ISL(아일랜드/인도/이스라�
 | 여백 (Padding) | 상하좌우 **최소 20** 단위 | 키라인이 잘리지 않도록 |
 | 키라인 (외곽선) | `stroke-width="50"` (너비 720 기준) | 굵은 단일 외곽선이 이 모음의 정체성입니다 |
 | 모서리 | `stroke-linejoin="round"` 또는 둥근 코너 | 날카로운 꼭짓점 지양 |
-| 글자 면(face) | **투명** 또는 국기 색상 | 흰색을 명시적으로 칠하지 않아도 됩니다 |
-| 잉크 색상 | 순수 검정 `#000` | 다크모드 자동 변환의 전제 조건입니다 |
+| 글자 면(face) | 해당 국가의 **국기 패턴** | 이 모음의 가장 큰 특징입니다 |
+| 키라인 색상 | 안쪽 검정 + 바깥쪽 흰색 | 밝은/어두운 배경 모두에서 보이게 하는 장치입니다 |
 | 국기 색상 | 해당 국가 공식 색상값 사용 | 예: 프랑스 `#002654` / `#ce1126` |
 | 글자 수 | 약어 **3–6자** 권장 | `Libras` 처럼 6자까지 허용 |
 | 배경 | **투명** (배경 사각형 금지) | 포스터·아이콘 어디에나 얹을 수 있어야 합니다 |
 
-### 🌓 다크모드 색상 규칙 (중요)
+### 🌓 밝은 배경 · 어두운 배경 모두에서 보이게 하기
 
-`scripts/generate_badges.py` 는 SVG의 **무채색만** 자동으로 반전시킵니다.
+이 모음의 배지는 **별도의 다크모드용 파일을 만들지 않습니다.** 대신 한 장의 PNG가 두 배경
+모두에서 읽히도록 디자인합니다.
 
-- **순수 검정 `#000`** → 밝은 잉크 `#f5f5f5` 로 변환됩니다.
-- **순수 흰색 `#fff`** → 어두운 바탕색 `#12151c` 으로 변환됩니다.
-- **채도가 있는 색(국기 색상)** → **변환되지 않고 그대로 유지**됩니다.
+- 글자 안쪽은 **국기 패턴**으로 채웁니다. 대부분의 국기는 채도가 높아 어느 배경에서도 눈에 띕니다.
+- 글자 바깥에는 **흰색 외곽선**을 둘러 어두운 배경에서 형태가 묻히지 않게 합니다.
+- 배경은 **반드시 투명(알파 채널)** 으로 저장합니다.
 
-따라서 **잉크는 반드시 `#000`, 면은 투명 또는 국기 색상**으로 작성해 주세요.
-`#1a1a1a` 같은 "거의 검정"을 쓰면 다크모드에서 변환되지 않아 배경에 묻힙니다.
+새 배지를 만드신 뒤에는 **밝은 배경과 어두운 배경에 각각 올려놓고 직접 눈으로 확인**해 주세요.
 
 ### ✍️ 폰트 가이드
 
@@ -84,15 +79,16 @@ Auslan(호주), LSE(스페인), CSL(중국), ISL(아일랜드/인도/이스라�
 
 ```
 assets/
-├── svg/<약어>.svg                        ← 기여자가 추가하는 유일한 원본
-└── export/<theme>/<shape>/<size>/…       ← 스크립트가 생성 (직접 수정 금지)
+├── png/<약어>.png     ← 국기 패턴까지 포함된 완성본 (미리보기·배포용)
+├── svg/<약어>.svg     ← 글자 외곽선 벡터
+└── vector/            ← 일러스트레이터 작업 원본 (.ai)
 ```
 
 - 파일명은 **국제적으로 통용되는 약어**를 그대로 사용합니다. (`ASL.svg`, `NGT.svg`)
 - 대소문자는 **원어 표기를 따릅니다.** 약어는 대문자(`BSL`), 약어가 아닌 고유명은
   일반 표기(`Libras`)를 씁니다.
 - 공백·한글·특수문자는 파일명에 사용하지 않습니다.
-- `assets/export/` 와 `assets/png/` 의 파일은 **직접 커밋하지 말고 스크립트로 생성**해 주세요.
+- PNG는 **배경이 투명한 상태로** 저장해 주세요. 흰색 배경을 깔지 않습니다.
 
 ---
 
@@ -109,21 +105,18 @@ assets/
 
 ## 5. 제출 전 체크리스트
 
-- [ ] `assets/svg/<약어>.svg` 하나만 추가했다 (다른 수어 배지를 섞지 않았다)
+- [ ] 하나의 수어 배지만 추가했다 (다른 수어 배지를 섞지 않았다)
 - [ ] `<text>` 요소가 없다 — 모든 글자가 패스로 변환되었다
-- [ ] 잉크가 `#000`, 배경이 투명이다
-- [ ] `python scripts/generate_badges.py --only <약어>` 가 오류 없이 끝난다
-- [ ] 생성된 **라이트/다크 배지를 실제로 눈으로 확인**했다
+- [ ] PNG 배경이 투명하고, 글자에 흰색 외곽선이 둘러져 있다
+- [ ] **밝은 배경과 어두운 배경에 각각 올려놓고 눈으로 확인**했다
 - [ ] `README.md` 의 한국어 표와 English 표에 모두 행을 추가했다
 - [ ] 사용한 폰트가 상업적 이용 및 재배포를 허용한다
 - [ ] 본인이 직접 제작했으며 CC BY 4.0 배포에 동의한다
 
-생성 결과를 빠르게 확인하려면:
+SVG의 글자가 패스로 변환되었는지는 아래 명령으로 빠르게 확인하실 수 있습니다.
 
 ```bash
-python scripts/generate_badges.py --only <약어> --sizes sm --formats png
-# assets/export/light/wide/sm/<약어>.png  → 밝은 배경에 올려 확인
-# assets/export/dark/wide/sm/<약어>.png   → 어두운 배경에 올려 확인
+grep -c "<text" assets/svg/<약어>.svg   # 0 이 나와야 합니다
 ```
 
 ---
@@ -165,14 +158,9 @@ are very welcome.
 ## 1. How to contribute
 
 1. **Fork** the repository and create a branch named `feature/add-<ABBR>` (e.g. `feature/add-auslan`).
-2. Add **one SVG master** at `assets/svg/<ABBR>.svg`.
-3. Generate the raster badges:
-   ```bash
-   pip install -r scripts/requirements.txt
-   python scripts/generate_badges.py --only <ABBR> --sizes md --formats png,webp
-   ```
-4. Add a row to the badge table in `README.md` — in **both** the Korean and the English table.
-5. Open a pull request stating the **endonym** of the sign language and the **sources** you used.
+2. Add the **finished PNG** at `assets/png/<ABBR>.png` and the **outline vector** at `assets/svg/<ABBR>.svg`.
+3. Add a row to the badge table in `README.md` — in **both** the Korean and the English table.
+4. Open a pull request stating the **endonym** of the sign language and the **sources** you used.
 
 > Not a designer? Opening an [issue](https://github.com/LeeSimYul/sign-language-badges/issues)
 > to request a badge is a valuable contribution too.
@@ -188,23 +176,23 @@ same family as the existing eight.
 | Padding | at least **20** units on every side | so the keyline is never clipped |
 | Keyline (outline) | `stroke-width="50"` at a width of 720 | the heavy single outline is this set's identity |
 | Corners | `stroke-linejoin="round"` or rounded corners | avoid sharp vertices |
-| Letter face | **transparent** or flag colour | there is no need to paint it white |
-| Ink colour | pure black `#000` | required for the automatic dark-mode conversion |
+| Letter face | the country's **flag pattern** | this is the defining feature of the set |
+| Keyline colour | black inside, white outside | this is what makes it work on either background |
 | Flag colours | official national colour values | e.g. France `#002654` / `#ce1126` |
 | Letter count | **3–6 characters** | up to six, as in `Libras` |
 | Background | **transparent**, no background rectangle | it must sit on posters and icons alike |
 
-### 🌓 Dark-mode colour rules (important)
+### 🌓 Working on light and dark backgrounds
 
-`scripts/generate_badges.py` inverts **only the achromatic parts** of an SVG:
+This set does **not** ship separate dark-mode files. Instead a single PNG is
+designed to read on either background:
 
-- **pure black `#000`** becomes light ink `#f5f5f5`
-- **pure white `#fff`** becomes dark paper `#12151c`
-- **any chromatic colour (flag colours)** is **left untouched**
+- fill the letters with the **flag pattern** — most flags are saturated enough to
+  stand out anywhere;
+- wrap the letters in a **white outer keyline** so the silhouette survives on a dark background;
+- always save with a **transparent background** (alpha channel).
 
-So draw your **ink in `#000`** and leave faces **transparent or flag-coloured**.
-A "nearly black" value such as `#1a1a1a` will not be converted and will vanish
-against a dark background.
+Once your badge is done, **put it on a light background and a dark one and look at it.**
 
 ### ✍️ Typography guide
 
@@ -223,15 +211,16 @@ against a dark background.
 
 ```
 assets/
-├── svg/<ABBR>.svg                        ← the only file a contributor adds
-└── export/<theme>/<shape>/<size>/…       ← generated by the script, never hand-edited
+├── png/<ABBR>.png     ← the finished badge, flag pattern included
+├── svg/<ABBR>.svg     ← vector letter outlines
+└── vector/            ← Illustrator working file (.ai)
 ```
 
 - Name files after the **internationally used abbreviation** (`ASL.svg`, `NGT.svg`).
 - Follow the **endonym's own casing**: abbreviations in caps (`BSL`), proper names
   as written (`Libras`).
 - No spaces, non-Latin characters or special characters in filenames.
-- Never hand-commit files under `assets/export/` or `assets/png/` — generate them.
+- Save the PNG with a **transparent background** — never flatten it onto white.
 
 ## 4. SVG authoring rules
 
@@ -244,19 +233,18 @@ assets/
 
 ## 5. Pre-submission checklist
 
-- [ ] exactly one new `assets/svg/<ABBR>.svg`, no other badges mixed in
+- [ ] exactly one new badge, no others mixed in
 - [ ] no `<text>` elements — all type converted to paths
-- [ ] ink is `#000` and the background is transparent
-- [ ] `python scripts/generate_badges.py --only <ABBR>` finishes without errors
-- [ ] you **looked at** the generated light and dark badges
+- [ ] the PNG has a transparent background and a white outer keyline
+- [ ] you **looked at** the badge on a light background and on a dark one
 - [ ] rows added to both the Korean and the English table in `README.md`
 - [ ] the font you used permits commercial use and redistribution
 - [ ] the artwork is your own and you agree to release it under CC BY 4.0
 
+To confirm your type was converted to outlines:
+
 ```bash
-python scripts/generate_badges.py --only <ABBR> --sizes sm --formats png
-# assets/export/light/wide/sm/<ABBR>.png  → check it on a light background
-# assets/export/dark/wide/sm/<ABBR>.png   → check it on a dark background
+grep -c "<text" assets/svg/<ABBR>.svg   # must print 0
 ```
 
 ## 6. Naming accuracy

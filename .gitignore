@@ -1,0 +1,15 @@
+# Generated badges: only the 640px (md) wide exports are tracked.
+# Every other size and shape is produced on demand by
+# scripts/generate_badges.py and should not be committed.
+assets/export/manifest.json
+assets/export/**/xs/
+assets/export/**/sm/
+assets/export/**/lg/
+assets/export/**/*px/
+assets/export/*/square/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
